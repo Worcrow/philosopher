@@ -13,10 +13,11 @@
 #include <sys/time.h>
 #include <signal.h>
 
-#define MEAL "/sem_meals10"       // create sem for child, to prevent data racing between child process and the monitor
-#define WRITE "/sem_writes10"     // prevent ovelaping text between child process
-#define DEAD "/sem_deads10"      // kill all philos, once sem_wait return form this sem
-#define FINISH "/sem_finishs10" // prevent other child process from continuing execution if the simulation stoped
+#define MEAL "/sem_meals10"                    // create sem for child, to prevent data racing between child process and the monitor
+#define WRITE "/sem_writes10"                 // prevent ovelaping text between child process
+#define DEAD "/sem_deads10"                  // kill all philos, once sem_wait return form this sem
+#define FINISH "/sem_finishs10"             // prevent other child process from continuing execution if the simulation stoped
+#define WAIT_PROC "/sem_wait_proccess"     //  wait for all process to be created
 
 typedef struct data t_data;
 
@@ -75,6 +76,7 @@ typedef struct data
   sem_t   *write;
   sem_t   *dead;
   sem_t   *stop;
+  sem_t   *all_created;
   t_philo *philo;
 } t_data;
 
@@ -99,5 +101,6 @@ void    init_philo(t_philo *philo);
 void    *monitor(void *data);
 bool    eaten_enough(t_philo *philo);
 void    clean_data(t_data *data);
+void    delay_time(t_data *data);
 
 #endif

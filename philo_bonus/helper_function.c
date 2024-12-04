@@ -50,9 +50,11 @@ void  clean_data(t_data *data)
   sem_handler(&data->write, SEM_CLOSE, NULL, 0);
   sem_handler(&data->dead, SEM_CLOSE, NULL, 0);
   sem_handler(&data->stop, SEM_CLOSE, NULL, 0);
+   sem_handler(&data->all_created, SEM_CLOSE, NULL, 0);
   sem_handler(NULL, SEM_UNLINK, WRITE, 0);
   sem_handler(NULL, SEM_UNLINK, DEAD, 0);
   sem_handler(NULL, SEM_UNLINK, FINISH, 0);
+  sem_handler(NULL, SEM_UNLINK, WAIT_PROC, 0);
   while (++i < data->nb_philo)
   {
     free(data->philo[i].sem_meal_name);
@@ -65,3 +67,8 @@ void  clean_data(t_data *data)
   free(data->sem_fork);
   free(data->sem_fork_name);
 }
+
+// void  delay_time(t_data *data)
+// {
+//   sem_handler(&data->all_created, SEM_WAIT, NULL, 0);
+// }

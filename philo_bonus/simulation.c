@@ -21,6 +21,7 @@ static void puts_forks(t_philo *philo)
 
 static void eat(t_philo *philo)
 {
+  ft_usleep(100, philo->data);
   grab_forks(philo);
   write_status(EAT, philo);
   sem_handler(&philo->sem_meal, SEM_WAIT, NULL, 0);
@@ -61,11 +62,13 @@ void  start_dinner(t_philo *philo)
 {
   init_philo(philo);
   //if (philo->id % 2 == 0)
+  // sem_handler(&philo->data->all_created, SEM_WAIT, NULL, 0);
+  if (philo->id % 2 == 0)
+    ft_usleep(100, philo->data);
   while (!is_simulation_finished(philo->data))
   {
     if (eaten_enough(philo))
       break;
-    //think(philo, true);
     eat(philo);
     write_status(SLEEP, philo);
     ft_usleep(philo->data->time_to_sleep, philo->data);
@@ -95,5 +98,6 @@ void  start_simulation(t_data *data)
     else
       data->philo[i].pid = pid;
   }
+  sem_handler(&data->all_created, SEM_POST, NULL, 0);
   wait_and_kill(data);
 }

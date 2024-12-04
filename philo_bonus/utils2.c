@@ -71,25 +71,47 @@ size_t	get_time(e_time time_code)
 	return (0);
 }
 
-void  ft_usleep(long time, t_data *data)
-{
-  size_t  start;
-  size_t  passed_time;
-  size_t  remained_time;
+// void  ft_usleep(long time, t_data *data)
+// {
+//   size_t  start;
+//   size_t  passed_time;
+//   size_t  remained_time;
 
-  start = get_time(MICROSECOND);
-  while (get_time(MICROSECOND) - start < time)
-  {
-    if (is_simulation_finished(data))
-      break ;
-    passed_time = get_time(MICROSECOND) - start;
-    remained_time = time - passed_time;
-    if (remained_time > 100)
-      usleep(remained_time / 2);
-    else
-      while(get_time(MICROSECOND) - start < time)
-        ;
-  }
+//   start = get_time(MICROSECOND);
+//   while (get_time(MICROSECOND) - start < time)
+//   {
+//     if (is_simulation_finished(data))
+//       break ;
+//     passed_time = get_time(MICROSECOND) - start;
+//     remained_time = time - passed_time;
+//     if (remained_time > 100)
+//       usleep(remained_time / 2);
+//     else
+//       while(get_time(MICROSECOND) - start < time)
+//         ;
+//   }
+// }
+
+void	ft_usleep(long usec, t_data *philo)
+{
+	long	start;
+	long	passed_time;
+	long	remained_time;
+
+	start = get_time(MICROSECOND);
+	while(get_time(MICROSECOND) - start < usec)
+	{
+		if (is_simulation_finished(philo))
+			break;
+		passed_time = get_time(MICROSECOND) - start;
+		remained_time = passed_time - usec;
+		//set a threeshold, 1e3 is an arbitary value
+		if (remained_time > 1e3)
+			usleep(remained_time / 2);
+		else
+			while (get_time(MICROSECOND) - start < usec)
+				;
+	}
 }
 
 bool  is_simulation_finished(t_data *data)
